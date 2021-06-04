@@ -1,12 +1,17 @@
-
 // ServiceWorker処理：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
 
 // キャッシュ名とキャッシュファイルの指定
 var CACHE_NAME = 'pwa-sample-caches';
 var urlsToCache = [
-	'/pwa/',
-	'/pwa/css/style.css',
-	'/pwa/drawer.js'
+	'/',
+	'/css/style.css',
+	'/css/bootstrap.css',
+
+	'/js/lib/jQuery.js',
+	'/js/lib/bootstrap.js',
+
+	'/js/form/form.js',
+	'/js/native/camera.js',
 ];
 
 // インストール処理
