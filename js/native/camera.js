@@ -107,7 +107,8 @@ function CameraManger () {
     // props
     var camera,
         saved_iamge_list = {},
-        count;
+        count,
+        $saved_img_wrapped;
     
         // functions
     var saveImage;
@@ -129,19 +130,26 @@ function CameraManger () {
             $('.a-Btn--save').on('click', function(e){
                 var image_src = $("#js-Camera__image").attr("src");
                 that.setImage(image_src);
-                thas.showSavedImages();
+                that.showSavedImages();
             });
             return that;
         },
+
         setImage: function (image_src) {
             saved_iamge_list = [];
+            saved_iamge_list.push($('<p class="a-Img"><img src="' + image_src + '"></p>'));
+        },
+
+        showSavedImages: function () {
+            $saved_img = $('#js-Camera__saved > .a-Img');
+            $saved_img.remove();
+
+            $saved_img_wrapped = $('#js-Camera__saved');
             for ( var i = 0; i < this.getSavedCount(); ++i ) {
-                saved_iamge_list.push('<p><img src="' + image_src + '"></p>');
+                $saved_img_wrapped.append(saved_iamge_list[i]);
             }
         },
-        showSavedImages: function (image_src) {
-            
-        },
+   
         getSavedCount: function () {
             count = Object.keys(saved_iamge_list).length;
             return count;

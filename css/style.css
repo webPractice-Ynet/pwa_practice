@@ -7,6 +7,16 @@
   text-align: center;
 }
 
+.m-Camera .c-SavedImages .a-Img {
+  width: 100px;
+  margin: auto;
+}
+
+.m-Camera .c-SavedImages .a-Img img {
+  width: 100%;
+  object-fit: contain;
+}
+
 .c-Camera {
   position: relative;
   margin: auto;
