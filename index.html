@@ -7,44 +7,105 @@
         <link rel="apple-touch-icon" href="icon.png" sizes="192x192">
 		<title>PWA Sample</title>
 		<link rel="stylesheet" href="css/style.css">
-		
-
+		<link rel="stylesheet" href="css/bootstrap.css">
+		<script src="js/lib/jQuery.js"></script>
+		<script src="js/lib/bootstrap.js"></script>
+		<script src="js/form/form.js"></script>
 	</head>
-<body onload="openCamera();">
+<body>
+
+<header>
+	<nav class="navbar navbar-dark bg-dark">
+		<div class="container-fluid">
+			<a class="navbar-brand">Navbar</a>
+			<form class="d-flex">
+				<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-outline-success" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
+</header>	
+<main class="l-Main">
+	<div class="m-Camera container">
+		<div class="c-Camera" id="js-Camera">
+			<script src="js/native/camera.js"></script>
+			<video class="a-Video" autoplay playsinline id="js-Camera__video"></video>
+			<div class="c-BtnWrapper container">
+				<button type="button" class="btn btn-primary a-Btn js-takePicture" data-bs-toggle="modal" data-bs-target="#exampleModal">作成</button>
+			</div>
+		</div>
+	</div>
+</main>	
 
 
-	<video autoplay playsinline></video>
-	<script src="js/native/camera.js"></script>
+<!-- Modal -->
+<div class="modal fade c-Modal" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog c-Modal__dialog">
+		<div class="modal-content">
+		<div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">写真</h5>
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<form class="modal-body js-Form text-center" id="js-Form">
+			<div class="c-Camera">
+				<img class="a-Img" id='js-Camera__image' src="" alt="" >
+				<canvas class="a-Canvas" id="js-Canvas"></canvas>
+			</div>
+		</form>
+		<div class="modal-footer c-Modal__BtnWrapper">
+			<button type="button" class="btn btn-secondary a-Btn--close" data-bs-dismiss="modal">Close</button>
+			<div>
+				<button type="button" class="btn btn-primary a-Btn--save">保存</button>
+				<button type="button" class="btn btn-primary a-Btn--submit">送信</button>
+			</div>
+		</div>
+		</div>
+	</div>
+</div>
 
 
-
+<footer></footer>
 
 <script>
-// manifestのlinkタグを生成
-function setManifest(path) {
-	const manifest = document.createElement('link');
-	manifest.rel = 'manifest';
-	manifest.href = path;
-	document.head.appendChild(manifest);
-}
+	// manifestのlinkタグを生成
+	function setManifest(path) {
+		const manifest = document.createElement('link');
+		manifest.rel = 'manifest';
+		manifest.href = path;
+		document.head.appendChild(manifest);
+	}
 
-// OSに応じて読み込むmanifestを変更
-var userAgent = navigator.userAgent.toLowerCase();
-if (userAgent.indexOf("iphone") > 0 || userAgent.indexOf("ipad") > 0) {
-	setManifest('manifest_ios.json')
-} else {
-	setManifest('manifest.json')
-}
+	// OSに応じて読み込むmanifestを変更
+	var userAgent = navigator.userAgent.toLowerCase();
+	if (userAgent.indexOf("iphone") > 0 || userAgent.indexOf("ipad") > 0) {
+		setManifest('manifest_ios.json')
+	} else {
+		setManifest('manifest.json')
+	}
 
-// ServiceWorker登録：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
-if ('serviceWorker' in navigator) {
-	navigator.serviceWorker.register('js/sw.js').then(function(registration) {
-		console.log('ServiceWorker registration successful with scope: ', registration.scope);
-	}).catch(function(err) {
-		console.log('ServiceWorker registration failed: ', err);
-	});
-}
+	// ServiceWorker登録：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
+	if ('serviceWorker' in navigator) {
+		navigator.serviceWorker.register('js/sw.js').then(function(registration) {
+			console.log('ServiceWorker registration successful with scope: ', registration.scope);
+		}).catch(function(err) {
+			console.log('ServiceWorker registration failed: ', err);
+		});
+	}
 </script>
+<script>
 
+
+//最後に実行※画像読み込み後
+window.onload = function() {
+	var form = Form(".js-Form").init();
+
+	var camera_manager = CameraManger();
+	camera_manager.init('.js-takePicture', 400, 400);
+	
+	
+	form.init();
+};
+
+</script>
 </body>
 </html>
