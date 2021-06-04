@@ -1,4 +1,3 @@
-
 // ServiceWorker処理：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
 
 // キャッシュ名とキャッシュファイルの指定
@@ -7,10 +6,11 @@ var urlsToCache = [
 	'/',
 	'/css/style.css',
 	'/css/bootslibtrap.css',
-	'/js/canvas/drawer.js',
-	'js/form/form.js',
 	'/js/lib/jQuery.js',
 	'/js/lib/bootstrap.js',
+
+	'/js/canvas/drawer.js',
+	'/js/form/form.js',
 	'/js/native/camera.js',
 ];
 
