@@ -11,7 +11,6 @@
 
 	</head>
 <body onload="openCamera();">
-	<script src="/js/utils/manifest.js"></script>
 
 
 	<video autoplay playsinline></video>
@@ -19,8 +18,24 @@
 
 
 
-	
+
 <script>
+// manifestのlinkタグを生成
+function setManifest(path) {
+	const manifest = document.createElement('link');
+	manifest.rel = 'manifest';
+	manifest.href = path;
+	document.head.appendChild(manifest);
+}
+
+// OSに応じて読み込むmanifestを変更
+var userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.indexOf("iphone") > 0 || userAgent.indexOf("ipad") > 0) {
+	setManifest('manifest_ios.json')
+} else {
+	setManifest('manifest.json')
+}
+
 // ServiceWorker登録：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
 if ('serviceWorker' in navigator) {
 	navigator.serviceWorker.register('/js/sw.js').then(function(registration) {

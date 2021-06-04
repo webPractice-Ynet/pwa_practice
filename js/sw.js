@@ -6,7 +6,6 @@ var CACHE_NAME = 'pwa-sample-caches';
 var urlsToCache = [
 	'/',
 	'/css/style.css',
-	'/js/utils/manifest.js',
 	'/js/native/camera.js',
 	'/js/canvas/drawer.js'
 ];
