@@ -7,12 +7,11 @@ var urlsToCache = [
 	'/',
 	'/css/style.css',
 	'/css/bootslibtrap.css',
-	
-	'/js/native/jQuery.js',
+	'/js/canvas/drawer.js',
 	'js/form/form.js',
-	'/js/native/bootstrap.js',
+	'/js/lib/jQuery.js',
+	'/js/lib/bootstrap.js',
 	'/js/native/camera.js',
-	'/js/canvas/drawer.js'
 ];
 
 // インストール処理
