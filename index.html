@@ -79,7 +79,7 @@
 	// OSに応じて読み込むmanifestを変更
 	var userAgent = navigator.userAgent.toLowerCase();
 	if (userAgent.indexOf("iphone") > 0 || userAgent.indexOf("ipad") > 0) {
-		setManifest('manifest_ios.json')
+		setManifest('manifest.json')
 	} else {
 		setManifest('manifest.json')
 	}
