@@ -4,7 +4,7 @@ name: HelloWorld
 # events but only for the master branch
 on:
   push:
-    branches: [ main ]
+    branches: [ pre ]
 jobs:
   deploy:
     name: Upload to Amazon S3

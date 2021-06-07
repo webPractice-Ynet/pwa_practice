@@ -4,9 +4,11 @@ function NativeCamera (camera_height, camera_width) {
     var video,canvas,ctx,w,h ,img;
     var camera_height = camera_height,
         camera_width = camera_width;
+
+    var img_blob;
         
     // functions
-    var open, setCanvas, submit;
+    var open, setCanvas, takePicuter, changeImage, setImgBlob;
 
     var r = 0.9;
     setCanvas = function () {
@@ -58,39 +60,43 @@ function NativeCamera (camera_height, camera_width) {
             });
     };
     
-    submit = function (mark) {
+    takePicuter = function () {
        
         ctx.drawImage(video, 0, 0, w, h);
         canvas.toBlob(function(blob) {
-          img = document.getElementById('js-Camera__image');
-          img.src = window.URL.createObjectURL(blob);
+            setImgBlob(blob);
+            changeImage(blob);
         }, 'image/jpeg', 0.95);
-
         // stream.getTracks()[0].stop();
       
     };
 
-    save = function (id) {
-
+    changeImage = function (blob) {
+        img = document.getElementById('js-Camera__image');
+        img.src = window.URL.createObjectURL(blob);
+    };
+    setImgBlob = function (blob) {
+        img_blob = null;
+        img_blob = blob;
     };
 
     return {
         init: function(mark) {
 
             this.setCanvas();
-            this.setSubmitEvent(mark);
+            this.takePicuter(mark);
             return this;
         },
         setCanvas: function () {
             setCanvas();
             return this;
         },
-        setSubmitEvent: function (mark) {
+        takePicuter: function (mark) {
             var that = this;
             $(mark).on('click', function () {
                 that.setCanvas();
 
-                submit(mark);
+                takePicuter();
             });
             return this;
         },
@@ -99,21 +105,30 @@ function NativeCamera (camera_height, camera_width) {
             return this;
         },
         
+        getImageBlob: function () {
+            return img_blob;
+        }
+        
     };
 }
 
 function CameraManger () {
 
     // props
-    var camera,
+    var camera,//NativeCamera
         saved_iamge_list = {},
         count,
         $saved_img_wrapped;
-    
-        // functions
-    var saveImage;
 
     return {
+        //api
+        getData_Api: function () {
+            return {
+                name: 'iamge',
+                data: this.getImageBlob()
+            }
+        },
+        //内部設定
         init: function (target_camera, camera_height, camera_width) {
             this.setCamera(target_camera, camera_height, camera_width)
                 .setSaveEvent();
@@ -129,8 +144,8 @@ function CameraManger () {
             var that = this;
             $('.a-Btn--save').on('click', function(e){
                 var image_src = $("#js-Camera__image").attr("src");
-                that.setImage(image_src);
-                that.showSavedImages();
+                that.setImage(image_src)
+                    .showSavedImages();
             });
             return that;
         },
@@ -138,6 +153,7 @@ function CameraManger () {
         setImage: function (image_src) {
             saved_iamge_list = [];
             saved_iamge_list.push($('<p class="a-Img"><img src="' + image_src + '"></p>'));
+            return this;
         },
 
         showSavedImages: function () {
@@ -148,12 +164,16 @@ function CameraManger () {
             for ( var i = 0; i < this.getSavedCount(); ++i ) {
                 $saved_img_wrapped.append(saved_iamge_list[i]);
             }
+
+            return this;
         },
    
         getSavedCount: function () {
             count = Object.keys(saved_iamge_list).length;
             return count;
         },
-        
+        getImageBlob: function () {
+            return camera.getImageBlob();
+        }
     };
 }

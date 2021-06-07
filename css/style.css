@@ -7,6 +7,11 @@
   text-align: center;
 }
 
+.m-Camera .c-SavedImages {
+  display: inline-block;
+  cursor: pointer;
+}
+
 .m-Camera .c-SavedImages .a-Img {
   width: 100px;
   margin: auto;

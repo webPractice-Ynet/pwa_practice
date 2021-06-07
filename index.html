@@ -34,7 +34,9 @@
 				<button type="button" class="btn btn-primary a-Btn js-takePicture" data-bs-toggle="modal" data-bs-target="#exampleModal">作成</button>
 			</div>
 		</div>
-		<div class="c-SavedImages" id="js-Camera__saved"></div>
+		<div class="m-Camera__btn">
+			<div class="c-SavedImages" id="js-Camera__saved" data-bs-toggle="modal" data-bs-target="#exampleModal"></div>
+		</div>
 	</div>
 </main>	
 
@@ -47,17 +49,28 @@
 			<h5 class="modal-title" id="exampleModalLabel">写真</h5>
 			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		</div>
-		<form class="modal-body js-Form text-center" id="js-Form">
+		<form class="modal-body text-center" id="js-Form" enctype="multipart/form-data">
 			<div class="c-Camera">
 				<img class="a-Img" id='js-Camera__image' src="" alt="" >
 				<canvas class="a-Canvas" id="js-Canvas"></canvas>
 			</div>
+			<ul style="list-style: none;">
+				<li>
+					<span>E-Mail</span>
+					<input type="mail" name="email">
+				</li>
+				<li class="mt-1">
+					<span>お名前</span>
+					<input type="text" name="name">
+				</li>
+			</ul>
+			
 		</form>
 		<div class="modal-footer c-Modal__BtnWrapper">
 			<button type="button" class="btn btn-secondary a-Btn--close" data-bs-dismiss="modal">Close</button>
 			<div>
 				<button type="button" class="btn btn-primary a-Btn--save" data-bs-dismiss="modal" aria-label="Close">保存</button>
-				<button type="button" class="btn btn-primary a-Btn--submit">送信</button>
+				<button type="button" class="btn btn-primary a-Btn--submit" id="js-Form__submit">送信</button>
 			</div>
 		</div>
 		</div>
@@ -66,7 +79,7 @@
 
 
 <footer></footer>
-
+<script src="https://www.google.com/recaptcha/api.js?render=6LdNqYgaAAAAAHvlcA8yJVeEFO2Y2-c9Os6j_75H"></script>
 <script>
 	// manifestのlinkタグを生成
 	function setManifest(path) {
@@ -86,7 +99,8 @@
 
 	// ServiceWorker登録：https://developers.google.com/web/fundamentals/primers/service-workers/?hl=ja
 	if ('serviceWorker' in navigator) {
-		navigator.serviceWorker.register('sw.js').then(function(registration) {
+		navigator.serviceWorker.register('sw.js')
+		.then(function(registration) {
 			console.log('ServiceWorker registration successful with scope: ', registration.scope);
 		}).catch(function(err) {
 			console.log('ServiceWorker registration failed: ', err);
@@ -98,13 +112,14 @@
 
 //最後に実行※画像読み込み後
 window.onload = function() {
-	var form = Form(".js-Form").init();
+	var camera_manager, form;
 
-	var camera_manager = CameraManger();
+	camera_manager = CameraManger();
 	camera_manager.init('.js-takePicture', 400, 400);
 	
-	
-	form.init();
+	form = Form();
+	form.init("js-Form")
+		.setApi(camera_manager);
 };
 
 </script>

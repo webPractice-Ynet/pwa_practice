@@ -6,9 +6,12 @@
 .m-Camera {
 	text-align: center;
 	.c-SavedImages {
+		display: inline-block;
+		cursor: pointer;
 		.a-Img {
 			width: 100px;
 			margin: auto;
+			
 			img {
 				width: 100%;
 				object-fit: contain;
