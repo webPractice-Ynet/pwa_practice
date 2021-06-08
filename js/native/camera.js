@@ -124,9 +124,8 @@ function CameraManger () {
         //api
         getData_Api: function () {
             return {
-                name: 'iamge',
-                data: this.getImageBlob()
-            }
+                'image': this.getImageBlob(),
+            };
         },
         //内部設定
         init: function (target_camera, camera_height, camera_width) {

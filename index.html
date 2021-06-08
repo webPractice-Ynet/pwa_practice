@@ -112,13 +112,18 @@
 
 //最後に実行※画像読み込み後
 window.onload = function() {
-	var camera_manager, form;
+	var camera_manager, 
+		// recaptcha,
+		form;
 
 	camera_manager = CameraManger();
 	camera_manager.init('.js-takePicture', 400, 400);
-	
+
+	// recaptcha = Recaptcha();
+
 	form = Form();
 	form.init("js-Form")
+		// .setApi(recaptcha)
 		.setApi(camera_manager);
 };
 

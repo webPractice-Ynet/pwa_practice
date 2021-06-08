@@ -22,26 +22,38 @@ function Form () {
 
 	setData_api = function () {
 
-		var api_data = null;
-		for ( var i = 0; i < Object.keys(api_list).length; ++i) {
-			api_data = api_list[i].getData_Api();
-			console.log(api_data);
-			if (api_data !== null) {
-				form_data.append(
-					api_data.name, 
-					api_data.data
-				);
+		var api_data = null,
+			data_keys = [],
+			data_key_name = null;
+		
+		for ( var api_counter = 0; api_counter < Object.keys(api_list).length; ++api_counter) {
+			
+			api_data = null;
+			api_data = api_list[api_counter].getData_Api();
+			if (api_data === null) {
+				continue;
 			}
 
-			api_data = null;
+			data_keys = [];
+			data_keys = Object.keys(api_data);
+
+			for ( var data_counter = 0; data_counter < data_keys.length; ++data_counter) {
+				data_key_name = null
+				data_key_name = data_keys[data_counter];
+				form_data.append(
+					data_key_name,
+					api_data[data_key_name]
+				);
+			}
+			
 		}
 	};
 
 	post = function () {
 		return new Promise(function(resolve, reject) {
-			var url = "https://1dtpncdx3c.execute-api.ap-northeast-1.amazonaws.com/main/test";
-			$.ajax(url,
-                {
+			var url = "https://5i6bdmyj32.execute-api.ap-northeast-1.amazonaws.com/main/test";
+			$.ajax({
+					url,
 					type: 'post',
 					processData: false,
 					contentType: false,
@@ -63,14 +75,46 @@ function Form () {
 
 	recaptcha = {
 			
-		result: false,
-		bot_token: null,
-		bot_action: null,
+		data: {
+			result: false,
+			bot_token: null,
+			bot_action: null,
+		},
+
+		getData_Api: function () {
+            return {
+				'bot_token': this.data.bot_token,
+				'bot_action': this.data.bot_action,
+			}
+        },
+		setFormData: function () {
+			var data = getData_Api(),
+				data_keys = Object.keys(data);
+				data_key_name = null;
+
+			for ( var i = 0; i < data_keys.length; ++i) {
+				data_key_name = null;
+				data_key_name = data_keys[i];
+				form_data.append(
+					data_key_name,
+					api_data[data_key_name]
+				);
+			}
+		},
+
+		checkResult: function () {
+			return this.data.result;
+		},
+
 
 		init: function () {
-			this.result = false;
-			this.bot_token = null;
-			this.bot_action = null;
+			this.data = {
+				result: false,
+				bot_token: null,
+				bot_action: null,
+			}
+
+			return this;
 		},
 
 		boot: function () {
@@ -90,8 +134,10 @@ function Form () {
 						recaptcha_result = false;
 					}
 				);
-		}
+		},
 	}
+
+
 	return {
 		init: function (mark) {
 			var that = this;
@@ -111,21 +157,22 @@ function Form () {
 			return this;
 		},
 		getFormData: function () {
-			console.log(form_data);
 			return form_data;
 		},
 
 		submit: async function () {
-			await recaptcha.boot();
-			if (!recaptcha.result) {
-				return;
-			}
+			initFormData();
 
-            initFormData();
+			// await recaptcha.boot();
+			// if (!recaptcha.checkResult()) {
+			// 	return;
+			// } else {
+			// 	recaptcha.setFormData();
+			// }
             
 			this.validate().setFormData();
-			
 			setData_api();
+			
 			await post();
 
 			return this;
@@ -138,3 +185,61 @@ function Form () {
 
 	}
 }
+
+// function Recaptcha() {
+			
+// 	var data =  {
+// 		result: false,
+// 		bot_token: null,
+// 		bot_action: null,
+// 	};
+
+// 	var getData_Api, checkResult, initData, boot;
+
+// 	getData_Api = function () {
+// 		return {
+// 			'bot_token': data.bot_token,
+// 			'bot_action': data.bot_action,
+// 		}
+// 	},
+	
+// 	checkResult = function () {
+// 		return data.result;
+// 	}
+
+
+// 	initData = function () {
+// 		data = {
+// 			result: false,
+// 			bot_token: null,
+// 			bot_action: null,
+// 		}
+
+// 		return this;
+// 	},
+
+// 	boot = function () {
+// 		return grecaptcha.execute('6LdNqYgaAAAAAHvlcA8yJVeEFO2Y2-c9Os6j_75H', {action: 'submit'})//invisbleRecaptchaの公開キー
+// 			.then(
+// 				function(token) {
+// 					initData();
+// 					//サーバ側の認証で使用します。
+// 					that.bot_token = token;
+// 					that.bot_action = "submit";
+// 					that.result = true;
+// 				},
+// 				function () {
+// 					that.init();
+// 					alert("不正なアクセスです。");
+// 					recaptcha_result = false;
+// 				}
+// 			);
+// 	};
+
+// 	return {
+// 		getData_Api: getData_Api, 
+// 		checkResult: checkResult, 
+// 		initData: initData, 
+// 		boot: boot
+// 	}
+// }
