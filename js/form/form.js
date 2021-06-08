@@ -14,10 +14,12 @@ function Form () {
 		// form_data = new FormData;
     };
     setFormData = function () {
-		// form_data.append(
-		// 	"data", 
-		// 	// new Blob( [data], {type:"application/octet-stream"} )
-		// );
+		var temp = {};
+		for (let data of form_data.entries()) { 
+			temp[data[0]] = data[1];
+		}
+
+		form_data = JSON.stringify(temp);
     };
 
 	setData_api = function () {
@@ -171,9 +173,11 @@ function Form () {
 				recaptcha.setFormData();
 			}
             
-			this.validate().setFormData();
-			setData_api();
 			
+			setData_api();
+			this.validate().setFormData();
+			
+
 			await post();
 
 			return this;
@@ -244,3 +248,5 @@ function Form () {
 // 		boot: boot
 // 	}
 // }
+
+
