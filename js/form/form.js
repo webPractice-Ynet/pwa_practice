@@ -51,7 +51,8 @@ function Form () {
 
 	post = function () {
 		return new Promise(function(resolve, reject) {
-			var url = "https://5i6bdmyj32.execute-api.ap-northeast-1.amazonaws.com/main/test";
+
+			var url = "https://5i6bdmyj32.execute-api.ap-northeast-1.amazonaws.com/main/mail";
 			$.ajax({
 					url,
 					type: 'post',
@@ -88,7 +89,7 @@ function Form () {
 			}
         },
 		setFormData: function () {
-			var data = getData_Api(),
+			var data = this.getData_Api(),
 				data_keys = Object.keys(data);
 				data_key_name = null;
 
@@ -97,7 +98,7 @@ function Form () {
 				data_key_name = data_keys[i];
 				form_data.append(
 					data_key_name,
-					api_data[data_key_name]
+					data[data_key_name]
 				);
 			}
 		},
