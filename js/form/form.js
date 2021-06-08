@@ -124,14 +124,13 @@ function Form () {
 					function(token) {
 						that.init();
 						//サーバ側の認証で使用します。
-						that.bot_token = token;
-						that.bot_action = "submit";
-						that.result = true;
+						that.data.result = true;
+						that.data.bot_token = token;
+						that.data.bot_action = "submit";
 					},
 					function () {
 						that.init();
 						alert("不正なアクセスです。");
-						recaptcha_result = false;
 					}
 				);
 		},
@@ -163,12 +162,13 @@ function Form () {
 		submit: async function () {
 			initFormData();
 
-			// await recaptcha.boot();
-			// if (!recaptcha.checkResult()) {
-			// 	return;
-			// } else {
-			// 	recaptcha.setFormData();
-			// }
+			await recaptcha.boot();
+			console.log(recaptcha.checkResult());
+			if (!recaptcha.checkResult()) {
+				return;
+			} else {
+				recaptcha.setFormData();
+			}
             
 			this.validate().setFormData();
 			setData_api();
